@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('partials/Head'); %>
+  <style>
+    a,
+    a:hover {
+      text-decoration: none;
+    }
+  </style>
+  <body class="cat-bg cat-body addlab-bg">
+    <%- include('partials/Navbar') %>
+    <div class="d-flex justify-content-center mt-5">
+      <div class="profile">
+        <div class="profile-sub d-flex justify-content-center">
+          <img
+            src="<%=labour.profile_pic.download_url%>"
+            style="
+              height: 150px;
+              width: 150px;
+              border-radius: 50%;
+              border: 2px solid rgba(89, 87, 87, 0.7);
+            "
+          />
+        </div>
+        <div class="profile-sub">
+          <p class="badge bg-primary">Name</p>
+          <p class="content"><%= labour.name %></p>
+        </div>
+        <div class="profile-sub">
+          <p class="badge bg-primary">Description</p>
+          <p class="content"><%= labour.description %></p>
+        </div>
+        <div class="profile-sub">
+          <p class="badge bg-primary">Addres</p>
+          <p class="content"><%= labour.address %></p>
+        </div>
+        <div class="profile-sub">
+          <p class="badge bg-primary">Category</p>
+          <p class="content"><%= labour.category %></p>
+        </div>
+        <div class="profile-sub">
+          <p class="badge bg-primary">Phone</p>
+          <p class="content"><%= labour.phone %></p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

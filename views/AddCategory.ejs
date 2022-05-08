@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('partials/Head'); %>
+  <style>
+    a,
+    a:hover {
+      text-decoration: none;
+    }
+  </style>
+  <body class="cat-bg cat-body addlab-bg">
+    <%- include('partials/Navbar') %>
+    <div class="d-flex justify-content-center ">
+      <form id="submit" class="add-card">
+        <div class="d-flex flex-column login-form mt-4">
+          <label > Category </label>
+          <input type="text"  required />
+        </div>
+        <button class="btn btn-outline-success " style="margin-left: 4px;">Add</button>
+      </form>
+    </div>
+    <script>
+       $("#submit").submit(async (event) => {
+        event.preventDefault();
+        
+        const name = event.target[0].value ; 
+        const apiResponse = await fetch("http://localhost:5000/add/category", {
+          method: "POST",
+          headers:{
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({name}),
+        });
+        if(apiResponse.status ===201){
+          alert('Added a new category') ;
+          window.location.href = '/'  
+          return ; 
+        }
+        const erroResponse = await apiResponse.json(); 
+        alert(erroResponse.msg==='undefined'?"Please check form fileds":erroResponse.msg) ;
+      });
+    </script>
+  </body>
+</html>

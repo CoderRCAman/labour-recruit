@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('partials/Head'); %>
+  <style>
+    a,
+    a:hover {
+      text-decoration: none;
+    }
+  </style>
+  <%- include('partials/Navbar'); %>
+  <body class="cat-bg cat-body general-bg">
+    <div class="d-flex flex-wrap mt-2"> 
+      <% requests.forEach(function(request){ %>
+      <div class="request">
+          <div>
+            <p style="margin: 0;" class="badge bg-secondary">Title</p> 
+            <p class="req-title" style="margin: 0;font-weight: bold;margin-left: 4px;"><%=request.title%></p>
+          </div>
+          <div>
+            <p class="badge bg-primary" style="margin: 0;">Description</p>
+            <p style="margin: 0; margin-left: 4px; font-family: montserrat;">
+              <%=request.description%>
+            </p>
+          </div>
+          <div>
+            <p class="badge bg-success" style="margin: 0;">Phone</p>
+            <p style="margin: 0; margin-left: 4px; font-family: montserrat;">
+              <%=request.phone%>
+            </p>
+          </div>
+      </div>
+    <% }) %>   
+</div>
+    </div>
+  </body>
+</html>

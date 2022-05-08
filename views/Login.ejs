@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('partials/Head'); %>
+  <style>
+    a,
+    a:hover {
+      text-decoration: none;
+    }
+  </style>
+  <body class="login-bg">
+    <%- include('partials/Navbar') %> 
+   <div class="uk-animation-slide-top d-flex justify-content-center align-items-center" >
+    <div class="auth-card">
+      <form method="post" id="login" class="auth-card-form">
+         <div class="d-flex flex-column login-form">
+           <label>Email</label> 
+           <input type="text" required />
+         </div>
+         <div class="d-flex flex-column login-form">
+          <label>Password</label> 
+          <input type="password" required/>
+        </div> 
+        <button class="btn btn-outline-success">Login</button>
+      </form>
+      <a href="/signup">Don't have an account?</a>
+  </div>
+   </div> 
+   <script>
+      $("#login").submit(async(event) => {
+        event.preventDefault();
+        const bodyObj = {
+          email: event.target[0].value,
+          password: event.target[1].value,
+        };
+        const loginResponse = await fetch("/login", {
+          method: "POST", // *GET, POST, PUT, DELETE, etc.
+          mode: "cors", // no-cors, *cors, same-origin
+          cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+          credentials: "same-origin", // include, *same-origin, omit
+          headers: {
+            "Content-Type": "application/json",
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+          },
+
+          body: JSON.stringify(bodyObj),
+        });
+        const loginStatus = loginResponse.status;
+        const loginMsg = await loginResponse.json();
+        if (loginStatus === 200) {
+          // successful login
+          const redirectUrl = loginMsg.redirectUrl ? loginMsg.redirectUrl : "/";
+          window.location.replace(redirectUrl);
+        }
+        alert(loginMsg.msg);
+      });
+   </script>
+  </body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('partials/Head'); %>
+  <style>
+    a,
+    a:hover {
+      text-decoration: none;
+    }
+  </style>
+  <body class="cat-bg cat-body addlab-bg">
+    <%- include('partials/Navbar') %>
+    <div class="d-flex justify-content-center">
+      <form id="submit" class="add-card">
+        <div>
+          <img
+            src="https://www.dictionary.com/e/wp-content/uploads/2018/03/rickrolling-150x150.jpg"
+            id="profile-image"
+            alt="photo"
+            style="height: 100px; width: 100px; border-radius: 100px"
+          />
+        </div>
+        <div class="d-flex flex-column">
+          <label class="form-label text-muted" style="font-size: 20px">
+            Please select a picture
+          </label>
+          <input type="file" id="photo" multiple />
+        </div>
+        <div class="d-flex flex-column login-form mt-4">
+          <label> Name</label>
+          <input type="text" required /> 
+          <p style="margin: 0;padding:0; color:rgba(6, 126, 62, 0.5)">Atleas 3 alphabets long</p>
+        </div>
+        <div class="d-flex flex-column login-form mt-4">
+          <label> Description</label>
+          <textarea rows="3" required></textarea> 
+          <p style="margin: 0;padding:0; color:rgba(6, 126, 62, 0.5)">Atleas 10 alphabets long</p>
+        </div>
+        <div class="d-flex flex-column login-form mt-4">
+          <label> Address</label>
+          <textarea rows="3" required></textarea> 
+          <p style="margin: 0;padding:0; color:rgba(6, 126, 62, 0.5)">Atleas 10 alphabets long</p>
+        </div>
+        <div class="d-flex flex-column login-form mt-4">
+          <label> Select</label>
+          <select class="form-select" required> 
+            <option>Select</option>
+            <% category.forEach(function(cat){ %>
+              <option><%= cat.name %></option>
+            <% }); %>
+          </select>
+          <p style="margin: 0;padding:0; color:rgba(6, 126, 62, 0.5)">PLease select a category</p>
+        </div>
+        <div class="d-flex flex-column login-form mt-4">
+          <label> Phone</label>
+          <input type="text" required /> 
+        </div>
+        <button class="btn btn-outline-success" style="margin-left: 4px">
+          Add
+        </button>
+      </form>
+    </div>
+    <script>
+      var profilePic = null;
+      $("#photo").change((event) => {
+        profilePic = event.target.files[0] ? event.target.files[0] : profilePic;
+        const imageTag = document.getElementById("profile-image");
+        if (
+          profilePic.type === "image/jpeg" ||
+          profilePic.type === "image/png"
+        ) {
+          const fileReader = new FileReader();
+          fileReader.onload = () => {
+            imageTag.src = fileReader.result;
+          };
+          fileReader.readAsDataURL(profilePic);
+        } else {
+          alert("INVALID FILE TYPE SELECTION");
+          return;
+        }
+      });
+      $("#submit").submit(async (event) => {
+        event.preventDefault();
+        if (!profilePic) {
+          alert("NO PICTURE WAS SELECTED");
+          return;
+        }
+        const newFormData = new FormData();
+        newFormData.append("profile_pic", profilePic);
+        newFormData.append("name", event.target[1].value);
+        newFormData.append("description", event.target[2].value);
+        newFormData.append("address", event.target[3].value);
+        newFormData.append("category", event.target[4].value); 
+        newFormData.append("phone", event.target[5].value);  
+        if(event.target[4].value === "Select") { 
+          alert("Please select a category!");
+          return ; 
+        }
+        const apiResponse = await fetch("http://localhost:5000/add/labour", {
+          method: "POST",
+         
+          body: newFormData,
+        });
+        if(apiResponse.status ===201){
+          alert('Added a new labour') ;
+          window.location.href = '/'  
+          return ; 
+        }
+        const erroResponse = await apiResponse.json(); 
+        alert(erroResponse.msg==='undefined'?"Please check form fileds":erroResponse.msg) ;
+      });
+    </script>
+  </body>
+</html>

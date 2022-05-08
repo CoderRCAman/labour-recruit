@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('partials/Head'); %>
+  <style>
+    a,
+    a:hover {
+      text-decoration: none;
+    }
+  </style>
+  <body class="login-bg">
+    <%- include('partials/Navbar') %>
+    <div
+      class="uk-animation-slide-top d-flex justify-content-center align-items-center"
+    >
+      <div class="auth-card-signup">
+        <form method="POST" id="register" class="auth-card-form">
+          <div class="d-flex flex-column login-form">
+            <label>Name</label>
+            <input
+              type="text"
+              required
+              
+            />
+          </div>
+          <div class="d-flex flex-column login-form">
+            <label>Email</label>
+            <input
+              type="text"
+             
+              required
+            />
+          </div>
+          <div class="d-flex flex-column login-form">
+            <label>Password</label>
+            <input
+              type="password"
+              required
+             
+            />
+          </div>
+          <button type="submit" class="btn btn-outline-primary">Signup</button>
+        </form>
+        <a href="/login">Already have an account?</a>
+      </div>
+    </div>
+    <script>
+    
+      $("#register").submit(async (event) => {
+        event.preventDefault();
+        const bodyObj = {
+          name: event.target[0].value,
+          email: event.target[1].value,
+          password: event.target[2].value,
+        };
+        const registerAPIResponse = await fetch("/signup", {
+          method: "POST", // *GET, POST, PUT, DELETE, etc.
+          mode: "cors", // no-cors, *cors, same-origin
+          cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+          credentials: "same-origin", // include, *same-origin, omit
+          headers: {
+            "Content-Type": "application/json",
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+          },
+
+          body: JSON.stringify(bodyObj),
+        });
+        if(registerAPIResponse.status===201) {
+            window.location.replace('/login');
+        }
+        const erroMessage = await  registerAPIResponse.json();
+        alert(erroMessage.msg);
+      });
+    </script>
+  </body>
+</html>

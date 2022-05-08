@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('partials/Head'); %>
+  <style>
+    a,
+    a:hover {
+      text-decoration: none;
+    }
+  </style>
+  <body class="cat-bg cat-body general-bg">
+    <%- include('partials/Navbar') %>
+    <div class="d-flex flex-wrap justify-content-center mt-4">
+      <div class="card category" id="all">
+        <div class="card-body">
+          <h5 class="card-title" style="font-weight: bold; text-align: center">
+            All Category
+          </h5>
+        </div>
+      </div>
+      <% category.forEach(function(cat){ %>
+      <div class="card category" id="<%=cat._id%>">
+        <div class="card-body">
+          <h5 class="card-title" style="font-weight: bold; text-align: center">
+            <%=cat.name%>
+          </h5>
+        </div>
+      </div>
+      <% }); %>
+    </div>
+    <div
+      id="labours"
+      class="d-flex justify-content-center flex-wrap"
+      style="margin-top: 40px"
+    >
+      <% labours.forEach(function(labour){ %>
+      <!-- show all associated labours  -->
+
+      <div
+        class="card"
+        style="width: 18rem; margin-left: 2px; margin-bottom: 2px"
+      >
+        <img
+          style="height: 200px; width: 100%"
+          src="<%=labour.profile_pic.download_url%>"
+          class="card-img-top"
+          alt="..."
+        />
+        <div class="card-body">
+          <h5 class="card-title text-muted" style="font-weight: bold">
+            <%=labour.name%>
+          </h5>
+          <p class="card-text"><%=labour.description%></p>
+          <a href="/labour/profile/<%=labour._id%>" class="btn btn-primary">View Profile</a>
+        </div>
+      </div>
+      <% }); %>
+    </div>
+    <script>
+       const category = JSON.parse(
+        decodeURI("<%- encodeURI(JSON.stringify(category)); %>")
+      );
+      //load labours when clicked on a category
+      const renderLabours = (labour) => {
+        console.log(labour);
+        if (!labour || labour.length===0 ) {
+          $("#labours").empty();
+          $("#labours").append(
+            '<h3 style="text-align:center;color:red;">NO LABOURS FOUND!</h3>'
+          );
+          return;
+        }
+        $("#labours").empty();
+        labour.forEach((lab) => {
+          $("#labours").append(
+            `<div
+        class="card"
+        style="width: 18rem; margin-left: 2px; margin-bottom: 2px"
+      >
+        <img
+          style="height: 200px; width: 100%"
+          src="${lab.profile_pic.download_url}"
+          class="card-img-top"
+          alt="..."
+        />
+        <div class="card-body">
+          <h5 class="card-title text-muted" style="font-weight: bold">
+            ${lab.name}
+          </h5>
+          <p class="card-text">${lab.description}</p>
+          <a href="/labour/profile/${lab._id}" class="btn btn-primary">View Profile</a>
+        </div>
+        
+      </div>`
+          );
+        });
+      };
+      const loadLaboursByCat = async (cat) => {
+        try {
+          const labours = await fetch(
+            `http://localhost:5000/labour?category=${cat}`,
+            {
+              method: "GET",
+            }
+          );
+          const labour = await labours.json();
+          if (labours.status === 200) {
+            renderLabours(labour);
+          } else {
+            renderLabours(null);
+          }
+        } catch (error) {}
+      };
+      category.push({
+        name: "all",
+      });
+      //register click events on the category
+      $(document).ready(() => {
+        $("#all").click(() => {
+          loadLaboursByCat("all");
+        });
+        category.forEach((cat) => {
+          console.log(cat.name);
+          $(`#${cat._id}`).click(() => {
+            loadLaboursByCat(cat.name);
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

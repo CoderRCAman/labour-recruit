@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('partials/Head'); %>
+  <style>
+    a,
+    a:hover {
+      text-decoration: none;
+    }
+  </style>
+  <body class="text-center addlab-bg">
+    <%-include('partials/Navbar'); %>
+    <div class="d-flex justify-content-center mt-5">
+      <div class="profile">
+        <div class="profile-sub">
+          <p class="badge bg-primary">Name</p>
+          <p class="content"><%= user.name %></p>
+        </div>
+        <div class="profile-sub">
+          <p class="badge bg-primary">Email</p>
+          <p class="content"><%= user.email %></p>
+        </div>
+        <div class="profile-sub">
+          <p class="badge bg-primary">Type</p>
+          <p class="content"><%= user.role %></p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
