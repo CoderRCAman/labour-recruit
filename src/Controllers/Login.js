@@ -61,10 +61,19 @@ function logout (req,res) {
      redirectUrl: getRedirectRoutes(req),
    });
  }
+
+ const getAboutUs = async(req,res) => {
+  const loggedDetails = getLoggedInDetails(req) ; 
+  res.render('About',{loggedIn : loggedDetails?loggedDetails:false}) ; 
+ } 
+
  module.exports = {
    getLoginPage,
    loginUser,
    getUserRegistered,
-   logout
- };
+   logout,
+   getAboutUs
+ }; 
+
+
  

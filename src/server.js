@@ -1,4 +1,4 @@
-require("dotenv").config();
+require("dotenv").config(); //env files 
 const express = require("express");
 const mongoose = require("mongoose"); 
 const cookieParser = require('cookie-parser') ;
@@ -15,13 +15,14 @@ const app = express();
 const port = 5000;
 
 // If using a cloud based solution replace 'mongodb://localhost:27017/express-mongoose-template'
-// with the connection string supplied by your cloud supplier.
+// with the connection string supplied by your cloud supplier.  
+
 mongoose.connect(
   "mongodb+srv://labor:1234@cluster0.pdrm4.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
   { useUnifiedTopology: true }
 )
 .then(()=>{
-  console.log(">>>> DATABASE CONNECTED <<<<") ;
+  console.log(">>>> DATABASE CONNECTED OK <<<<") ;
 })
 .catch((error)=>{
   console.log("Something went wrong",'\n',error) ;
@@ -36,9 +37,10 @@ app.use(
 );
 app.use(cookieParser()) ;
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public"))); //E:\Minor Pojects\Labour Recruit\src\public
 app.use(express.json());
 app.set("view engine", "ejs"); 
 app.use(morgan("tiny"));
 app.use(LandingRoutes,LoginRoutes,CatRoutes,addRoutes,crudRoutes,ReqRoutes) ;
+
 app.listen(port, () => console.log(`>>>> Server started on port ${port} <<<<`));
